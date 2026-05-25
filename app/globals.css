@@ -1,54 +1,223 @@
+/* Pretendard variable font (dynamic subset — only loads Korean syllables in use). */
+@import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
+
 @import "tailwindcss";
 
-@theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 body {
-  font-family: var(--font-sans), system-ui, -apple-system, "Apple SD Gothic Neo",
-    "Noto Sans KR", sans-serif;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR",
+    "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  letter-spacing: -0.01em;
 }
 
-@layer components {
-  /* Shared form control style — muted, low-contrast in both light/dark. */
+/* ---------- Form controls ----------
+   Tailwind v4's @apply currently mis-compiles chains that mix dark: variants
+   with opacity modifiers, so these are hand-written with stone palette values
+   (https://tailwindcss.com/docs/customizing-colors#default-color-palette).    */
+
+.field-input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(214 211 209); /* stone-300 */
+  background: #ffffff;
+  color: rgb(28 25 23); /* stone-900 */
+  padding: 0.55rem 0.8rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  font-family: inherit;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease;
+}
+.field-input::placeholder {
+  color: rgb(168 162 158); /* stone-400 */
+}
+.field-input:focus {
+  outline: none;
+  border-color: rgb(120 113 108); /* stone-500 */
+  box-shadow: 0 0 0 3px rgb(168 162 158 / 0.25);
+}
+.field-input.resize-y {
+  resize: vertical;
+}
+
+@media (prefers-color-scheme: dark) {
   .field-input {
-    @apply w-full rounded-lg border border-stone-300 dark:border-stone-700
-      bg-white dark:bg-stone-800/70
-      px-3 py-2 text-[0.92rem] leading-6
-      text-stone-900 dark:text-stone-100
-      placeholder:text-stone-400 dark:placeholder:text-stone-500
-      focus:outline-none focus:ring-2 focus:ring-stone-400/60 dark:focus:ring-stone-500/60
-      focus:border-transparent transition;
+    border-color: rgb(68 64 60); /* stone-700 */
+    background: rgb(41 37 36 / 0.6); /* stone-800 @ 60% */
+    color: rgb(245 245 244); /* stone-100 */
   }
+  .field-input::placeholder {
+    color: rgb(120 113 108); /* stone-500 */
+  }
+  .field-input:focus {
+    border-color: rgb(168 162 158); /* stone-400 */
+    box-shadow: 0 0 0 3px rgb(120 113 108 / 0.3);
+  }
+}
 
-  /* Primary call-to-action — monochrome (inverted) for elegance. */
+/* ---------- Buttons ---------- */
+
+.btn-primary,
+.btn-ghost,
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.95rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    opacity 120ms ease;
+  white-space: nowrap;
+}
+.btn-primary:disabled,
+.btn-ghost:disabled,
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Primary — inverted monochrome */
+.btn-primary {
+  background: rgb(28 25 23); /* stone-900 */
+  color: rgb(250 250 249); /* stone-50 */
+}
+.btn-primary:hover:not(:disabled) {
+  background: rgb(41 37 36); /* stone-800 */
+}
+@media (prefers-color-scheme: dark) {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-1.5
-      rounded-md bg-stone-900 dark:bg-stone-100
-      text-stone-50 dark:text-stone-900
-      px-3.5 py-2 text-sm font-medium
-      hover:bg-stone-800 dark:hover:bg-white
-      disabled:opacity-50 transition;
+    background: rgb(245 245 244); /* stone-100 */
+    color: rgb(28 25 23); /* stone-900 */
   }
+  .btn-primary:hover:not(:disabled) {
+    background: #ffffff;
+  }
+}
 
-  /* Secondary / ghost button. */
+/* Ghost — bordered, transparent */
+.btn-ghost {
+  border-color: rgb(214 211 209); /* stone-300 */
+  color: rgb(68 64 60); /* stone-700 */
+  background: transparent;
+}
+.btn-ghost:hover:not(:disabled) {
+  background: rgb(245 245 244); /* stone-100 */
+}
+@media (prefers-color-scheme: dark) {
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-1.5
-      rounded-md border border-stone-300 dark:border-stone-700
-      bg-transparent text-stone-700 dark:text-stone-200
-      px-3.5 py-2 text-sm font-medium
-      hover:bg-stone-100 dark:hover:bg-stone-800/60 transition;
+    border-color: rgb(68 64 60); /* stone-700 */
+    color: rgb(231 229 228); /* stone-200 */
   }
+  .btn-ghost:hover:not(:disabled) {
+    background: rgb(41 37 36 / 0.6); /* stone-800/60 */
+  }
+}
 
-  /* Subtle destructive button. */
+/* Danger — subtle outlined red */
+.btn-danger {
+  border-color: rgb(252 165 165 / 0.7); /* red-300 */
+  color: rgb(185 28 28); /* red-700 */
+  background: transparent;
+}
+.btn-danger:hover:not(:disabled) {
+  background: rgb(254 242 242); /* red-50 */
+}
+@media (prefers-color-scheme: dark) {
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-1.5
-      rounded-md border border-red-300/70 dark:border-red-900/60
-      bg-transparent text-red-700 dark:text-red-300
-      px-3.5 py-2 text-sm font-medium
-      hover:bg-red-50 dark:hover:bg-red-950/40 transition;
+    border-color: rgb(127 29 29 / 0.6); /* red-900/60 */
+    color: rgb(252 165 165); /* red-300 */
+  }
+  .btn-danger:hover:not(:disabled) {
+    background: rgb(69 10 10 / 0.4); /* red-950/40 */
+  }
+}
+
+/* ---------- InfoTip (hover tooltip) ---------- */
+
+.infotip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgb(168 162 158 / 0.6); /* stone-400/60 */
+  background: transparent;
+  color: rgb(120 113 108); /* stone-500 */
+  font-size: 0.65rem;
+  font-weight: 600;
+  font-family: serif;
+  line-height: 1;
+  cursor: help;
+  user-select: none;
+  transition:
+    color 120ms ease,
+    border-color 120ms ease;
+}
+.infotip:hover,
+.infotip:focus-visible {
+  color: rgb(28 25 23); /* stone-900 */
+  border-color: rgb(120 113 108); /* stone-500 */
+  outline: none;
+}
+.infotip > .infotip-bubble {
+  position: absolute;
+  bottom: calc(100% + 0.4rem);
+  right: 0;
+  z-index: 20;
+  width: max-content;
+  max-width: 16rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 0.4rem;
+  background: rgb(28 25 23); /* stone-900 */
+  color: rgb(245 245 244); /* stone-100 */
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: normal;
+  text-align: left;
+  letter-spacing: 0;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(2px);
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+}
+.infotip:hover > .infotip-bubble,
+.infotip:focus-visible > .infotip-bubble {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .infotip {
+    border-color: rgb(120 113 108 / 0.6); /* stone-500/60 */
+    color: rgb(168 162 158); /* stone-400 */
+  }
+  .infotip:hover,
+  .infotip:focus-visible {
+    color: rgb(245 245 244); /* stone-100 */
+    border-color: rgb(168 162 158); /* stone-400 */
+  }
+  .infotip > .infotip-bubble {
+    background: rgb(245 245 244); /* stone-100 */
+    color: rgb(28 25 23); /* stone-900 */
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.5);
   }
 }

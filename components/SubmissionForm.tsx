@@ -11,6 +11,7 @@ import {
   parseTechStack,
   type SubmissionInput,
 } from "@/lib/schemas";
+import InfoTip from "./InfoTip";
 
 type Props = {
   /** Existing values when editing. If omitted, the form creates a new row. */
@@ -127,7 +128,7 @@ export default function SubmissionForm({ initial }: Props) {
 
       <Field
         label="서비스 URL"
-        hint="카드를 누르면 이 주소로 새 탭이 열립니다."
+        info="카드를 누른 사람은 이 주소로 새 탭이 열립니다. (예: Vercel 배포 URL)"
         error={errors.service_url?.message}
       >
         <input
@@ -138,12 +139,16 @@ export default function SubmissionForm({ initial }: Props) {
         />
       </Field>
 
-      <Field label="서비스 설명" error={errors.description?.message}>
+      <Field
+        label="서비스 설명"
+        info="어떤 문제를 해결하나요? 누가 사용하나요? 사용 시나리오를 짧게 적어주세요."
+        error={errors.description?.message}
+      >
         <textarea
           {...register("description")}
           rows={6}
           className="field-input resize-y"
-          placeholder="어떤 문제를 해결하나요? 누가 사용하나요? 사용 시나리오를 적어주세요."
+          placeholder="문제 정의 · 대상 사용자 · 핵심 기능 …"
         />
       </Field>
 
@@ -158,7 +163,11 @@ export default function SubmissionForm({ initial }: Props) {
           </select>
         </Field>
 
-        <Field label="사용 기술" hint="쉼표로 구분하여 입력" error={errors.tech_stack?.message}>
+        <Field
+          label="사용 기술"
+          info="쉼표(,)로 구분해 여러 개를 입력할 수 있습니다."
+          error={errors.tech_stack?.message}
+        >
           <input
             {...register("tech_stack")}
             className="field-input"
@@ -167,7 +176,10 @@ export default function SubmissionForm({ initial }: Props) {
         </Field>
       </div>
 
-      <Field label="썸네일 이미지" hint="선택 사항 · 16:9 비율을 권장">
+      <Field
+        label="썸네일 이미지"
+        info="선택 사항입니다. 16:9 비율의 캡처 이미지를 권장합니다."
+      >
         <input
           type="file"
           accept="image/*"
@@ -213,29 +225,30 @@ export default function SubmissionForm({ initial }: Props) {
 
 function Field({
   label,
-  hint,
+  info,
   error,
   children,
 }: {
   label: string;
-  hint?: string;
+  /** Optional hint shown via the (i) tooltip next to the label. */
+  info?: string;
   error?: string;
   children: React.ReactNode;
 }) {
   return (
     <label className="block space-y-1.5">
-      <div className="flex items-baseline justify-between">
+      <span className="inline-flex items-center gap-1.5">
         <span className="text-sm font-medium text-stone-800 dark:text-stone-200">
           {label}
         </span>
-        {hint && (
-          <span className="text-xs text-stone-500 dark:text-stone-400">
-            {hint}
-          </span>
-        )}
-      </div>
+        {info && <InfoTip text={info} />}
+      </span>
       {children}
-      {error && <span className="block text-xs text-red-600 dark:text-red-400">{error}</span>}
+      {error && (
+        <span className="block text-xs text-red-600 dark:text-red-400">
+          {error}
+        </span>
+      )}
     </label>
   );
 }
