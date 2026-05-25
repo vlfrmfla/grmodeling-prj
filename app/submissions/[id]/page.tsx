@@ -30,13 +30,16 @@ export default async function SubmissionDetail({
   const isOwner = user?.id === s.user_id;
 
   return (
-    <article className="mx-auto max-w-3xl space-y-6">
-      <Link href="/" className="text-sm text-neutral-500 hover:underline">
+    <article className="mx-auto max-w-3xl space-y-7">
+      <Link
+        href="/"
+        className="text-sm text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition"
+      >
         ← 갤러리로 돌아가기
       </Link>
 
       {s.thumbnail_url && (
-        <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-neutral-100">
+        <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-800">
           <Image
             src={s.thumbnail_url}
             alt={s.title}
@@ -50,12 +53,14 @@ export default async function SubmissionDetail({
       <div className="flex items-start justify-between gap-4">
         <div>
           {s.category && (
-            <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+            <span className="inline-block text-[10.5px] tracking-wider uppercase px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300">
               {s.category}
             </span>
           )}
-          <h1 className="text-2xl font-bold mt-2">{s.title}</h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mt-3">
+            {s.title}
+          </h1>
+          <p className="mt-1.5 text-sm text-stone-500 dark:text-stone-400">
             {s.profiles?.name ?? "익명"}
             {s.profiles?.department ? ` · ${s.profiles.department}` : ""} ·{" "}
             {new Date(s.created_at).toLocaleDateString("ko-KR")}
@@ -65,13 +70,13 @@ export default async function SubmissionDetail({
           href={s.service_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 rounded-md bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700"
+          className="btn-primary shrink-0"
         >
           방문하기 ↗
         </a>
       </div>
 
-      <p className="whitespace-pre-wrap text-[15px] leading-7 text-neutral-800 dark:text-neutral-200">
+      <p className="whitespace-pre-wrap text-[15px] leading-7 text-stone-700 dark:text-stone-200">
         {s.description}
       </p>
 
@@ -80,7 +85,7 @@ export default async function SubmissionDetail({
           {s.tech_stack.map((t) => (
             <span
               key={t}
-              className="text-xs rounded-full bg-neutral-100 dark:bg-neutral-800 px-2 py-1"
+              className="text-xs rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 px-2.5 py-1"
             >
               {t}
             </span>
@@ -89,11 +94,8 @@ export default async function SubmissionDetail({
       )}
 
       {isOwner && (
-        <div className="flex gap-2 pt-4 border-t border-neutral-200 dark:border-neutral-800">
-          <Link
-            href={`/submissions/${s.id}/edit`}
-            className="rounded-md border border-neutral-300 dark:border-neutral-700 px-3 py-1.5 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900"
-          >
+        <div className="flex gap-2 pt-5 border-t border-stone-200 dark:border-stone-800">
+          <Link href={`/submissions/${s.id}/edit`} className="btn-ghost">
             수정
           </Link>
           <DeleteButton id={s.id} />

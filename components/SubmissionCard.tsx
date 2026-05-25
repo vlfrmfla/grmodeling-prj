@@ -9,9 +9,9 @@ export default function SubmissionCard({ s }: { s: Submission }) {
       href={s.service_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm transition hover:shadow-md hover:-translate-y-0.5"
+      className="group block overflow-hidden rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-800/40 transition hover:border-stone-300 dark:hover:border-stone-700 hover:shadow-sm hover:-translate-y-0.5"
     >
-      <div className="relative aspect-video bg-neutral-100 dark:bg-neutral-800">
+      <div className="relative aspect-video bg-stone-100 dark:bg-stone-800">
         {s.thumbnail_url ? (
           <Image
             src={s.thumbnail_url}
@@ -21,26 +21,26 @@ export default function SubmissionCard({ s }: { s: Submission }) {
             className="object-cover"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-4xl">
-            🌾
+          <div className="flex h-full items-center justify-center text-3xl text-stone-400 dark:text-stone-600">
+            ◌
           </div>
         )}
       </div>
       <div className="p-4 space-y-2">
         {s.category && (
-          <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300">
+          <span className="inline-block text-[10.5px] tracking-wider uppercase px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300">
             {s.category}
           </span>
         )}
-        <h3 className="font-semibold text-base leading-snug group-hover:text-emerald-700 dark:group-hover:text-emerald-400 line-clamp-2">
+        <h3 className="font-medium text-[15px] leading-snug line-clamp-2">
           {s.title}
         </h3>
         {s.tech_stack && s.tech_stack.length > 0 && (
-          <p className="text-xs text-neutral-500 line-clamp-1">
+          <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-1">
             {s.tech_stack.join(" · ")}
           </p>
         )}
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-stone-500 dark:text-stone-400">
           {s.profiles?.name ?? "익명"} ·{" "}
           {new Date(s.created_at).toLocaleDateString("ko-KR")}
         </p>

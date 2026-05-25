@@ -67,7 +67,7 @@ export default function LoginForm() {
 
   return (
     <div className="space-y-5">
-      <div className="flex border-b border-neutral-200 dark:border-neutral-800 text-sm">
+      <div className="flex border-b border-stone-200 dark:border-stone-800 text-sm">
         {(["signin", "signup"] as Mode[]).map((m) => (
           <button
             key={m}
@@ -77,10 +77,10 @@ export default function LoginForm() {
               setError(null);
               setNotice(null);
             }}
-            className={`flex-1 py-2 ${
+            className={`flex-1 py-2.5 transition ${
               mode === m
-                ? "border-b-2 border-emerald-600 font-semibold"
-                : "text-neutral-500"
+                ? "border-b-2 border-stone-900 dark:border-stone-100 font-medium"
+                : "text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
             }`}
           >
             {m === "signin" ? "로그인" : "회원가입"}
@@ -95,7 +95,7 @@ export default function LoginForm() {
             onChange={(e) => setName(e.target.value)}
             placeholder="이름"
             required
-            className="w-full rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 py-2"
+            className="field-input"
           />
         )}
         <input
@@ -104,7 +104,7 @@ export default function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="학교 이메일"
           required
-          className="w-full rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 py-2"
+          className="field-input"
         />
         <input
           type="password"
@@ -113,37 +113,31 @@ export default function LoginForm() {
           placeholder="비밀번호 (8자 이상)"
           required
           minLength={8}
-          className="w-full rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 py-2"
+          className="field-input"
         />
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-md bg-emerald-600 px-3 py-2 text-white hover:bg-emerald-700 disabled:opacity-50"
-        >
+        <button type="submit" disabled={loading} className="btn-primary w-full">
           {loading ? "처리 중…" : mode === "signin" ? "로그인" : "회원가입"}
         </button>
       </form>
 
-      <div className="relative text-center text-xs text-neutral-500">
-        <span className="bg-neutral-50 dark:bg-neutral-950 px-2 relative z-10">또는</span>
-        <span className="absolute inset-x-0 top-1/2 h-px bg-neutral-200 dark:bg-neutral-800" />
+      <div className="relative text-center text-xs text-stone-500">
+        <span className="bg-stone-50 dark:bg-stone-900 px-3 relative z-10">
+          또는
+        </span>
+        <span className="absolute inset-x-0 top-1/2 h-px bg-stone-200 dark:bg-stone-800" />
       </div>
 
-      <button
-        type="button"
-        onClick={onGoogle}
-        className="w-full rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-800"
-      >
+      <button type="button" onClick={onGoogle} className="btn-ghost w-full">
         Google 계정으로 계속하기
       </button>
 
       {error && (
-        <p className="text-sm text-red-600 border border-red-200 bg-red-50 rounded p-2">
+        <p className="text-sm text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/60 bg-red-50/70 dark:bg-red-950/40 rounded-md p-2.5">
           {error}
         </p>
       )}
       {notice && (
-        <p className="text-sm text-emerald-700 border border-emerald-200 bg-emerald-50 rounded p-2">
+        <p className="text-sm text-stone-700 dark:text-stone-200 border border-stone-200 dark:border-stone-700 bg-stone-100/60 dark:bg-stone-800/60 rounded-md p-2.5">
           {notice}
         </p>
       )}

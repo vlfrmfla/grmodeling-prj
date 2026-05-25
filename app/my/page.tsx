@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import SubmissionCard from "@/components/SubmissionCard";
 import type { Submission } from "@/lib/schemas";
 
-export const metadata = { title: "내 제출물 · 농업 서비스 갤러리" };
+export const metadata = { title: "내 제출물" };
 
 export default async function MyPage() {
   const supabase = await createClient();
@@ -11,7 +11,7 @@ export default async function MyPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Middleware already redirects unauthenticated users, but be defensive.
+  // Middleware/proxy already redirects unauthenticated users, but be defensive.
   if (!user) return null;
 
   const { data } = await supabase
@@ -26,18 +26,20 @@ export default async function MyPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">내 제출물</h1>
-        <Link
-          href="/submissions/new"
-          className="rounded-md bg-emerald-600 px-3 py-1.5 text-white text-sm hover:bg-emerald-700"
-        >
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">내 제출물</h1>
+          <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+            내가 등록한 카드를 한눈에 관리합니다.
+          </p>
+        </div>
+        <Link href="/submissions/new" className="btn-primary">
           + 새 과제
         </Link>
       </div>
 
       {items.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-neutral-300 dark:border-neutral-700 p-10 text-center text-neutral-500">
+        <div className="rounded-xl border border-dashed border-stone-300 dark:border-stone-700 p-12 text-center text-stone-500 dark:text-stone-400">
           아직 등록한 과제가 없습니다.
         </div>
       ) : (
@@ -45,16 +47,16 @@ export default async function MyPage() {
           {items.map((s) => (
             <div key={s.id} className="space-y-2">
               <SubmissionCard s={s} />
-              <div className="flex gap-2 text-xs">
+              <div className="flex gap-3 text-xs px-1">
                 <Link
                   href={`/submissions/${s.id}`}
-                  className="text-neutral-600 hover:underline"
+                  className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition"
                 >
                   상세
                 </Link>
                 <Link
                   href={`/submissions/${s.id}/edit`}
-                  className="text-neutral-600 hover:underline"
+                  className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition"
                 >
                   수정
                 </Link>

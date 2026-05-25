@@ -14,8 +14,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "농업 서비스 과제 갤러리",
-  description: "학생들이 만든 농업 서비스 과제를 한 곳에서 모아 봅니다.",
+  title: {
+    default: "스마트 온실 모델링 이론과 개발 · 프로젝트 갤러리",
+    template: "%s · 스마트 온실 모델링",
+  },
+  description:
+    "스마트 온실 모델링 이론과 개발 강의 수강생들이 학기 동안 만든 프로젝트를 모아둔 갤러리입니다.",
 };
 
 export default function RootLayout({
@@ -28,13 +32,13 @@ export default function RootLayout({
       lang="ko"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+      <body className="min-h-full flex flex-col bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-100">
         <Header />
-        <main className="flex-1 mx-auto w-full max-w-6xl px-4 py-8">
+        <main className="flex-1 mx-auto w-full max-w-6xl px-4 sm:px-6 py-10">
           {children}
         </main>
-        <footer className="border-t border-neutral-200 dark:border-neutral-800 py-6 text-center text-xs text-neutral-500">
-          © {new Date().getFullYear()} 농업 서비스 과제 갤러리
+        <footer className="border-t border-stone-200 dark:border-stone-800 py-6 text-center text-xs text-stone-500 dark:text-stone-400">
+          © {new Date().getFullYear()} 스마트 온실 모델링 이론과 개발
         </footer>
       </body>
     </html>

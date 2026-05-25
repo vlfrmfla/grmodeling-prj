@@ -23,11 +23,7 @@ export default function DeleteButton({ id }: { id: string }) {
   }
 
   return (
-    <button
-      onClick={onDelete}
-      disabled={busy}
-      className="rounded-md border border-red-300 text-red-700 px-3 py-1.5 text-sm hover:bg-red-50 disabled:opacity-50"
-    >
+    <button onClick={onDelete} disabled={busy} className="btn-danger">
       {busy ? "삭제 중…" : "삭제"}
     </button>
   );

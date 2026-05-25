@@ -1,6 +1,7 @@
-# 농업 서비스 과제 갤러리
+# 스마트 온실 모델링 이론과 개발 · 프로젝트 갤러리
 
-학생들이 만든 농업 관련 웹 서비스를 카드 형태로 공유하는 플랫폼.
+강의 수강생들이 학기 동안 구현한 스마트 온실 / 농업 서비스 프로젝트를
+카드 형태로 모아 공유하는 플랫폼.
 
 - **Frontend**: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4
 - **Auth / DB / Storage**: Supabase (이메일+비번 / Google OAuth)

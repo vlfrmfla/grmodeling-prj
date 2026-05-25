@@ -14,7 +14,10 @@ import {
 
 type Props = {
   /** Existing values when editing. If omitted, the form creates a new row. */
-  initial?: Partial<SubmissionInput> & { id?: string; thumbnail_url?: string | null };
+  initial?: Partial<SubmissionInput> & {
+    id?: string;
+    thumbnail_url?: string | null;
+  };
 };
 
 export default function SubmissionForm({ initial }: Props) {
@@ -113,20 +116,24 @@ export default function SubmissionForm({ initial }: Props) {
   });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form onSubmit={onSubmit} className="space-y-6">
       <Field label="과제명" error={errors.title?.message}>
         <input
           {...register("title")}
-          className="input"
+          className="field-input"
           placeholder="예: 토마토 생육 예측 대시보드"
         />
       </Field>
 
-      <Field label="서비스 URL (카드 클릭 시 이동)" error={errors.service_url?.message}>
+      <Field
+        label="서비스 URL"
+        hint="카드를 누르면 이 주소로 새 탭이 열립니다."
+        error={errors.service_url?.message}
+      >
         <input
           {...register("service_url")}
           type="url"
-          className="input"
+          className="field-input"
           placeholder="https://my-service.vercel.app"
         />
       </Field>
@@ -135,14 +142,14 @@ export default function SubmissionForm({ initial }: Props) {
         <textarea
           {...register("description")}
           rows={6}
-          className="input"
+          className="field-input resize-y"
           placeholder="어떤 문제를 해결하나요? 누가 사용하나요? 사용 시나리오를 적어주세요."
         />
       </Field>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Field label="카테고리" error={errors.category?.message}>
-          <select {...register("category")} className="input">
+          <select {...register("category")} className="field-input">
             {CATEGORIES.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -151,74 +158,84 @@ export default function SubmissionForm({ initial }: Props) {
           </select>
         </Field>
 
-        <Field label="사용 기술 (쉼표로 구분)" error={errors.tech_stack?.message}>
+        <Field label="사용 기술" hint="쉼표로 구분하여 입력" error={errors.tech_stack?.message}>
           <input
             {...register("tech_stack")}
-            className="input"
+            className="field-input"
             placeholder="Next.js, Supabase, TensorFlow.js"
           />
         </Field>
       </div>
 
-      <Field label="썸네일 이미지 (선택)">
-        <input type="file" accept="image/*" onChange={onPickThumb} />
+      <Field label="썸네일 이미지" hint="선택 사항 · 16:9 비율을 권장">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={onPickThumb}
+          className="block w-full text-sm text-stone-600 dark:text-stone-300
+            file:mr-3 file:rounded-md file:border-0
+            file:bg-stone-200 dark:file:bg-stone-700
+            file:px-3 file:py-1.5 file:text-sm file:font-medium
+            file:text-stone-800 dark:file:text-stone-100
+            hover:file:bg-stone-300 dark:hover:file:bg-stone-600 file:transition"
+        />
         {thumbPreview && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={thumbPreview}
             alt="썸네일 미리보기"
-            className="mt-3 rounded-md max-h-40 object-cover"
+            className="mt-3 rounded-md max-h-48 object-cover border border-stone-200 dark:border-stone-800"
           />
         )}
       </Field>
 
       {serverError && (
-        <p className="text-sm text-red-600 border border-red-200 bg-red-50 rounded p-2">
+        <p className="text-sm text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/60 bg-red-50/70 dark:bg-red-950/40 rounded-md p-2.5">
           {serverError}
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="rounded-md bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 disabled:opacity-50"
-      >
-        {submitting ? "저장 중…" : isEdit ? "수정 저장" : "카드 등록"}
-      </button>
-
-      <style jsx>{`
-        :global(.input) {
-          width: 100%;
-          border-radius: 0.375rem;
-          border: 1px solid rgb(212 212 216);
-          background: white;
-          padding: 0.5rem 0.75rem;
-          font-size: 0.875rem;
-        }
-        :global(.dark .input) {
-          border-color: rgb(63 63 70);
-          background: rgb(24 24 27);
-          color: rgb(244 244 245);
-        }
-      `}</style>
+      <div className="flex gap-2 pt-2">
+        <button type="submit" disabled={submitting} className="btn-primary">
+          {submitting ? "저장 중…" : isEdit ? "수정 저장" : "카드 등록"}
+        </button>
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="btn-ghost"
+        >
+          취소
+        </button>
+      </div>
     </form>
   );
 }
 
 function Field({
   label,
+  hint,
   error,
   children,
 }: {
   label: string;
+  hint?: string;
   error?: string;
   children: React.ReactNode;
 }) {
   return (
-    <label className="block space-y-1">
-      <span className="text-sm font-medium">{label}</span>
+    <label className="block space-y-1.5">
+      <div className="flex items-baseline justify-between">
+        <span className="text-sm font-medium text-stone-800 dark:text-stone-200">
+          {label}
+        </span>
+        {hint && (
+          <span className="text-xs text-stone-500 dark:text-stone-400">
+            {hint}
+          </span>
+        )}
+      </div>
       {children}
-      {error && <span className="block text-xs text-red-600">{error}</span>}
+      {error && <span className="block text-xs text-red-600 dark:text-red-400">{error}</span>}
     </label>
   );
 }
