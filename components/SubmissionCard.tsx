@@ -21,9 +21,7 @@ export default function SubmissionCard({ s }: { s: Submission }) {
             className="object-cover"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-3xl text-stone-400 dark:text-stone-600">
-            ◌
-          </div>
+          <LinkPreview url={s.service_url} alt={s.title} />
         )}
       </div>
       <div className="p-4 space-y-2">
@@ -46,5 +44,61 @@ export default function SubmissionCard({ s }: { s: Submission }) {
         </p>
       </div>
     </a>
+  );
+}
+
+/**
+ * Auto-preview shown when the student didn't upload a thumbnail.
+ *
+ * Uses WordPress.com's free `mshots` screenshot service. The first request
+ * for a given URL queues the screenshot (~30s placeholder); subsequent
+ * requests return the cached image instantly.
+ *
+ * Over the screenshot we always render a small favicon + domain badge so
+ * the viewer immediately sees where the card leads — even while the
+ * screenshot is still queueing.
+ */
+function LinkPreview({ url, alt }: { url: string; alt: string }) {
+  const shot = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(url)}?w=800&h=450`;
+  let domain = "";
+  try {
+    domain = new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    // Malformed URL — DomainBadge will render empty and we'll just show
+    // the screenshot. Still better than nothing.
+  }
+  const favicon = domain
+    ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64`
+    : null;
+
+  return (
+    <>
+      {/* External screenshot — use a plain <img> so we don't need to
+          whitelist s.wordpress.com in next.config.ts. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={shot}
+        alt={alt}
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      {domain && (
+        <div className="absolute bottom-2 left-2 right-2 flex items-center gap-1.5 rounded-md bg-white/85 dark:bg-stone-900/85 backdrop-blur-sm px-2 py-1 text-xs">
+          {favicon && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={favicon}
+              alt=""
+              width={14}
+              height={14}
+              className="rounded-sm shrink-0"
+            />
+          )}
+          <span className="truncate text-stone-700 dark:text-stone-200">
+            {domain}
+          </span>
+        </div>
+      )}
+    </>
   );
 }

@@ -18,7 +18,7 @@ export default async function Home() {
 
   return (
     <div>
-      <section className="mb-10 max-w-2xl">
+      <section className="mb-10">
         <p className="text-xs uppercase tracking-widest text-stone-500 dark:text-stone-400 mb-2">
           Smart Greenhouse Modeling — 2026 Spring
         </p>
@@ -26,9 +26,7 @@ export default async function Home() {
           스마트 온실 모델링 이론과 개발
         </h1>
         <p className="mt-3 text-[15px] leading-7 text-stone-600 dark:text-stone-400">
-          강의 수강생들이 학기 동안 구현한 스마트 온실 · 농업 서비스
-          프로젝트를 모아 둔 공간입니다. 카드를 누르면 학생이 배포한
-          서비스로 바로 이동합니다.
+          수강생 프로젝트 모음 — 카드를 누르면 학생이 배포한 서비스로 바로 이동합니다.
         </p>
       </section>
 
