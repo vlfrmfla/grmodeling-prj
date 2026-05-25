@@ -1,4 +1,7 @@
-// Small "i" badge that reveals a hint on hover/focus. Pure CSS tooltip.
+// Hover/focus tooltip rendered next to a form label. Uses the Lucide
+// Info icon for the trigger; the bubble is positioned via CSS in globals.css.
+import { Info } from "lucide-react";
+
 export default function InfoTip({ text }: { text: string }) {
   return (
     <span
@@ -6,10 +9,9 @@ export default function InfoTip({ text }: { text: string }) {
       role="button"
       tabIndex={0}
       aria-label={text}
-      // Provide a native fallback for touch devices that don't trigger :hover.
-      title={text}
+      title={text /* native fallback for touch + screen readers */}
     >
-      i
+      <Info size={14} strokeWidth={2} aria-hidden="true" />
       <span className="infotip-bubble" role="tooltip">
         {text}
       </span>
